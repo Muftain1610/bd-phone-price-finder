@@ -7,8 +7,6 @@ DELAY = 2
 
 SHOPS = {
     "KRY International": "https://kryinternational.com",
-    "Taham Tech": "https://tahamtech.com.bd",
-    "Cell Tech BD": "https://www.celltechbd.com.bd",
     "SMS Gadget": "https://smsgadget.com",
     "Rio International": "https://riointernational.com.bd",
     "Apple Gadgets BD": "https://www.applegadgetsbd.com",

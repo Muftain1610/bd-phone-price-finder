@@ -4,8 +4,6 @@
     {
       "name": "Vivo X300 5G",
       "offers": [
-        { "shop": "Cell Tech BD", "url": "https://www.celltechbd.com.bd/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 72500 },
-        { "shop": "Taham Tech", "url": "https://tahamtech.com.bd/product/vivo-x300/", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 77490 },
         { "shop": "SMS Gadget", "url": "https://smsgadget.com/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 80999 },
         { "shop": "KRY International", "url": "https://kryinternational.com/products/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 80999 },
         { "shop": "Rio International", "url": "https://riointernational.com.bd/product/vivo-x300-5g", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 81999 },
