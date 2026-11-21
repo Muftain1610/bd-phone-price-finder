@@ -215,7 +215,8 @@ function render(){
   card.innerHTML='<div class="phead"><h2>'+esc(p.name)+'</h2>'+sum+'</div>'+offers.map(o=>{
    const spec=(o.ram&&o.rom&&o.ram!=='-')?esc(o.ram)+' RAM · '+esc(o.rom):'';
    const tag=o.variant?'<span class="tag '+esc(o.variant)+'">'+esc(o.variant.toUpperCase())+'</span>':'<span class="tag"></span>';
-   const diff=o.stale?'<small class="diff">not re-checked</small>':(o.price!=null&&min!==null&&prices.length>1)?(o.price===min?'<small class="diff low">lowest</small>':'<small class="diff">+'+fmt(o.price-min)+'</small>'):'';
+   const when=o.checked?new Date(o.checked).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'';
+   const diff=o.stale?'<small class="diff">'+(when?'last checked '+esc(when):'not re-checked')+'</small>':(o.price!=null&&min!==null&&prices.length>1)?(o.price===min?'<small class="diff low">lowest</small>':'<small class="diff">+'+fmt(o.price-min)+'</small>'):'';
    const price='<span>'+(o.price!=null?fmt(o.price):'—')+'</span>'+diff;
    const btn=o.url?'<a class="visit" href="'+esc(o.url)+'" target="_blank" rel="noopener noreferrer">Visit the shop ↗</a>':'<span></span>';
    const isBest=min!==null&&o.price===min&&prices.length>1;

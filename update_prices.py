@@ -202,6 +202,9 @@ async def main():
         phone = {"name": PHONE, "offers": []}
         data["phones"].append(phone)
     by_shop = {o["shop"]: o for o in phone["offers"]}
+    for o in phone["offers"]:                      # first run after a manual check: remember when it was confirmed
+        if o.get("price") and not o.get("checked") and data.get("updated"):
+            o["checked"] = data["updated"]
 
     now = datetime.datetime.now(TZ).isoformat(timespec="seconds")
     ok_count = 0
