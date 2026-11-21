@@ -46,7 +46,10 @@ h1{font-size:clamp(1.7rem,6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line
 .phone h2{font-size:1.2rem;margin-bottom:12px}
 /* every row shares the same columns: shop | RAM·storage | variant | price | button */
 .row{display:grid;grid-template-columns:minmax(120px,1.4fr) 128px 78px 96px 150px;align-items:center;gap:10px;padding:12px 8px;margin:0 -8px;border-top:1px solid var(--border)}
-.shop{font-weight:700;min-width:0}
+.shop{font-weight:700;min-width:0;display:flex;align-items:center;gap:10px}
+.shop .nm{min-width:0;overflow-wrap:anywhere}
+.slogo{flex:none;width:32px;height:32px;border-radius:9px;background:#fff;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.slogo.ph{display:inline-flex;align-items:center;justify-content:center;color:#312e81;font-size:.9rem;font-weight:800}
 .mid{display:contents;font-size:.85rem;color:var(--muted)}
 .spec{font-size:.85rem;color:var(--muted);white-space:nowrap}
 .tag{display:inline-block;justify-self:start;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700}
@@ -62,7 +65,7 @@ h1{font-size:clamp(1.7rem,6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line
 .finder h2{margin-bottom:4px}
 .finder p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
 .finder .row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 0;margin:0}
-.finder .row .shop{min-width:120px}
+.finder .row .shop{min-width:150px}
 .finder .row .mid{display:block;flex:1;font-size:.8rem}
 .finder .row .visit{display:inline-block}
 .empty{text-align:center;color:var(--muted);padding:6px 0 14px;font-size:.9rem}
@@ -126,6 +129,16 @@ const SHOPS=[
  ['Sumash Tech','sumashtech.com'],
  ['Dazzle','dazzle.com.bd']
 ];
+const LOGOS={
+ 'KRY International':'logo-kry.png','SMS Gadget':'logo-sms.png','Like Telecom':'logo-like.png',
+ 'Rio International':'logo-rio.png','Apple Gadgets BD':'logo-apple.png','Sumash Tech':'logo-sumash.png','Dazzle':'logo-dazzle.png'
+};
+function shopHtml(name){
+ const f=LOGOS[name];
+ const icon=f?'<img class="slogo" src="'+f+'" alt="" width="32" height="32" loading="lazy">'
+  :'<span class="slogo ph" aria-hidden="true">'+esc(name.charAt(0).toUpperCase())+'</span>';
+ return icon+'<span class="nm">'+esc(name)+'</span>';
+}
 async function load(){
  try{
   const r=await fetch('prices.json?t='+Date.now());
@@ -151,11 +164,11 @@ function renderStatus(){
 function finderCard(q){
  const rows=SHOPS.map(([name,dom])=>{
   const url='https://www.google.com/search?q='+encodeURIComponent(q+' site:'+dom);
-  return '<div class="row"><div class="shop">'+esc(name)+'</div><div class="mid">Find '+esc(q)+' on this shop</div><a class="visit alt" href="'+url+'" target="_blank" rel="noopener noreferrer">Search shop ↗</a></div>';
+  return '<div class="row"><div class="shop">'+shopHtml(name)+'</div><div class="mid">Find '+esc(q)+' on this shop</div><a class="visit alt" href="'+url+'" target="_blank" rel="noopener noreferrer">Search shop ↗</a></div>';
  }).join('');
  const all='https://www.google.com/search?q='+encodeURIComponent(q+' price in Bangladesh');
  return '<div class="glass phone finder"><h2>Search “'+esc(q)+'” on the shops</h2><p>Exact prices are tracked for the Vivo X300 so far. For other phones, these links open each shop’s own results.</p>'+rows+
-  '<div class="row"><div class="shop">All of Bangladesh</div><div class="mid">Compare across every seller</div><a class="visit" href="'+all+'" target="_blank" rel="noopener noreferrer">Search the web ↗</a></div></div>';
+  '<div class="row"><div class="shop"><span class="slogo ph" aria-hidden="true">🌐</span><span class="nm">All of Bangladesh</span></div><div class="mid">Compare across every seller</div><a class="visit" href="'+all+'" target="_blank" rel="noopener noreferrer">Search the web ↗</a></div></div>';
 }
 function render(){
  const raw=$('#q').value.trim();
@@ -177,7 +190,7 @@ function render(){
    const price=o.price!=null?fmt(o.price):'—';
    const btn=o.url?'<a class="visit" href="'+esc(o.url)+'" target="_blank" rel="noopener noreferrer">Visit the shop ↗</a>':'<span></span>';
    const cls='row'+(min!==null&&o.price===min?' best':'');
-   return '<div class="'+cls+'"><div class="shop">'+esc(o.shop)+'</div><div class="mid"><span class="spec">'+spec+'</span>'+tag+'</div><div class="price">'+price+'</div>'+btn+'</div>';
+   return '<div class="'+cls+'"><div class="shop">'+shopHtml(o.shop)+'</div><div class="mid"><span class="spec">'+spec+'</span>'+tag+'</div><div class="price">'+price+'</div>'+btn+'</div>';
   }).join('');
   out.appendChild(card);shown++;
  });
