@@ -29,6 +29,8 @@ header p{color:var(--muted);margin-top:6px;font-size:.9rem}
 .phone{padding:18px;margin-bottom:16px}
 .phone h2{font-size:1.2rem;margin-bottom:12px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--border)}
+a.row{color:inherit;text-decoration:none}
+a.row:hover{background:rgba(255,255,255,.08)}
 .shop{font-weight:700;min-width:120px}
 .mid{flex:1;font-size:.85rem;color:var(--muted)}
 .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700;margin-left:6px}
@@ -78,12 +80,18 @@ function render(){
   if(q&&!p.name.toLowerCase().includes(q))return;
   let offers=p.offers.filter(o=>variant==='all'||o.variant===variant);
   if(!offers.length)return;
-  offers.sort((a,b)=>a.shop.localeCompare(b.shop)||a.price-b.price);
-  const min=Math.min(...offers.map(o=>o.price));
+  offers.sort((a,b)=>(a.price==null)-(b.price==null)||a.price-b.price||a.shop.localeCompare(b.shop));
+  const prices=offers.filter(o=>o.price!=null).map(o=>o.price);
+  const min=prices.length?Math.min(...prices):null;
   const card=document.createElement('div');card.className='glass phone';
-  card.innerHTML='<h2>'+p.name+'</h2>'+offers.map(o=>
-   '<div class="row'+(o.price===min?' best':'')+'"><div class="shop">'+o.shop+'</div><div class="mid">'+o.ram+' RAM · '+o.rom+' <span class="tag '+o.variant+'">'+o.variant.toUpperCase()+'</span></div><div class="price">'+fmt(o.price)+'</div></div>'
-  ).join('');
+  card.innerHTML='<h2>'+p.name+'</h2>'+offers.map(o=>{
+   const spec=(o.ram&&o.rom&&o.ram!=='-')?o.ram+' RAM · '+o.rom+' ':'';
+   const tag=o.variant?'<span class="tag '+o.variant+'">'+o.variant.toUpperCase()+'</span>':'';
+   const price=o.price!=null?fmt(o.price):'View price ↗';
+   const inner='<div class="shop">'+o.shop+'</div><div class="mid">'+spec+tag+'</div><div class="price">'+price+'</div>';
+   const cls='row'+(min!==null&&o.price===min?' best':'');
+   return o.url?'<a class="'+cls+'" href="'+o.url+'" target="_blank" rel="noopener noreferrer">'+inner+'</a>':'<div class="'+cls+'">'+inner+'</div>';
+  }).join('');
   out.appendChild(card);shown++;
  });
  if(!shown)out.innerHTML='<div class="empty">No phones found. Try another name.</div>';

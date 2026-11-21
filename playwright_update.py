@@ -6,19 +6,16 @@ PHONES = ["Vivo X300", "Vivo X200", "Samsung Galaxy S25", "iPhone 17"]
 DELAY = 2
 
 SHOPS = {
+    "KRY International": "https://kryinternational.com",
+    "Taham Tech": "https://tahamtech.com.bd",
+    "Cell Tech BD": "https://www.celltechbd.com.bd",
+    "SMS Gadget": "https://smsgadget.com",
     "Rio International": "https://riointernational.com.bd",
     "Apple Gadgets BD": "https://www.applegadgetsbd.com",
-    "Mobile Buzz BD": "https://mobilebuzzbd.com",
-    "Dazzle": "https://dazzle.com.bd",
-    "Taham Tech": "https://tahamtech.com.bd",
-    "Star Tech": "https://www.startech.com.bd",
     "Sumash Tech": "https://www.sumashtech.com",
-    "KRY International": "https://kryinternational.com",
-    "SMS Gadget": "https://smsgadget.com",
+    "Dazzle": "https://dazzle.com.bd",
+    "Like Telecom": "https://liketelecom.com.bd",
     "Gadget & Gear": "https://gadgetandgear.com",
-    "Cell Tech BD": "https://www.celltechbd.com.bd",
-    "Pickaboo": "https://www.pickaboo.com",
-    "Ryans Computers": "https://www.ryanscomputers.com",
 }
 
 # Known working search addresses are tried first, the search box is the fallback.
