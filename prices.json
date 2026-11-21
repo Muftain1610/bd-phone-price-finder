@@ -1,0 +1,23 @@
+{
+  "updated": "2026-11-21T10:00:00+06:00",
+  "phones": [
+    {
+      "name": "Vivo X300",
+      "offers": [
+        { "shop": "Rio International", "ram": "12GB", "rom": "256GB", "variant": "global", "price": 78999 },
+        { "shop": "Apple Gadgets BD", "ram": "12GB", "rom": "256GB", "variant": "official", "price": 83499 },
+        { "shop": "Mobile Buzz BD", "ram": "12GB", "rom": "256GB", "variant": "global", "price": 82000 },
+        { "shop": "Tajel", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 73000 },
+        { "shop": "Kiara International", "ram": "16GB", "rom": "512GB", "variant": "global", "price": 96999 },
+        { "shop": "Taham Tech", "ram": "16GB", "rom": "512GB", "variant": "china", "price": 89500 }
+      ]
+    },
+    {
+      "name": "Vivo X200",
+      "offers": [
+        { "shop": "Rio International", "ram": "12GB", "rom": "256GB", "variant": "global", "price": 69999 },
+        { "shop": "Tajel", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 62000 }
+      ]
+    }
+  ]
+}

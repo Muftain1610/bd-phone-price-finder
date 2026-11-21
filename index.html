@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>BD Phone Price Finder</title>
+<style>
+:root{--glass:rgba(255,255,255,.12);--border:rgba(255,255,255,.28);--text:#f4f7ff;--muted:#b8c2e0;--accent:#7cf0ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:#0b1020;overflow-x:hidden;padding:env(safe-area-inset-top) 16px 40px}
+body::before,body::after{content:"";position:fixed;width:420px;height:420px;border-radius:50%;filter:blur(90px);z-index:-1}
+body::before{background:#4f46e5;top:-120px;left:-120px;opacity:.7}
+body::after{background:#06b6d4;bottom:-140px;right:-120px;opacity:.6}
+.wrap{max-width:760px;margin:0 auto}
+header{padding:28px 0 16px;text-align:center}
+h1{font-size:1.6rem;font-weight:700}
+header p{color:var(--muted);margin-top:6px;font-size:.9rem}
+.glass{background:var(--glass);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.search{display:flex;gap:10px;padding:10px;margin-bottom:14px}
+.search input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-size:1.05rem;padding:10px 12px}
+.search input::placeholder{color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--glass);color:var(--text);font-size:.85rem;cursor:pointer}
+.chip.on{background:var(--accent);color:#06222a;border-color:var(--accent);font-weight:600}
+.status{font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:14px}
+.phone{padding:18px;margin-bottom:16px}
+.phone h2{font-size:1.2rem;margin-bottom:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--border)}
+.shop{font-weight:700;min-width:120px}
+.mid{flex:1;font-size:.85rem;color:var(--muted)}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700;margin-left:6px}
+.tag.china{background:#fb923c;color:#2b1200}
+.tag.global{background:#4ade80;color:#052e16}
+.tag.official{background:#60a5fa;color:#08203f}
+.price{font-weight:800;font-size:1.05rem;color:var(--accent);white-space:nowrap}
+.best{outline:2px solid var(--accent);border-radius:12px;padding-left:8px}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>📱 BD Phone Price Finder</h1><p>Compare prices from shops across Bangladesh</p></header>
+<div class="glass search"><input id="q" type="search" placeholder="Search a phone, e.g. Vivo X300" autocomplete="off"></div>
+<div class="filters" id="filters">
+<button class="chip on" data-v="all">All</button>
+<button class="chip" data-v="global">Global</button>
+<button class="chip" data-v="china">China</button>
+<button class="chip" data-v="official">Official</button>
+</div>
+<div class="status" id="status">Loading prices...</div>
+<div id="results"></div>
+</div>
+<script>
+let DATA={phones:[],updated:null},variant='all';
+const $=s=>document.querySelector(s);
+const fmt=n=>'৳'+Number(n).toLocaleString('en-IN');
+async function load(){
+ try{
+  const r=await fetch('prices.json?t='+Date.now());
+  DATA=await r.json();
+  localStorage.setItem('prices',JSON.stringify(DATA));
+ }catch(e){
+  const c=localStorage.getItem('prices');
+  if(c)DATA=JSON.parse(c);
+ }
+ const d=DATA.updated?new Date(DATA.updated).toLocaleString():'unknown';
+ $('#status').textContent='Last updated: '+d+' · auto-refreshes every 4 hours';
+ render();
+}
+function render(){
+ const q=$('#q').value.trim().toLowerCase();
+ const out=$('#results');out.innerHTML='';
+ let shown=0;
+ DATA.phones.forEach(p=>{
+  if(q&&!p.name.toLowerCase().includes(q))return;
+  let offers=p.offers.filter(o=>variant==='all'||o.variant===variant);
+  if(!offers.length)return;
+  offers.sort((a,b)=>a.shop.localeCompare(b.shop)||a.price-b.price);
+  const min=Math.min(...offers.map(o=>o.price));
+  const card=document.createElement('div');card.className='glass phone';
+  card.innerHTML='<h2>'+p.name+'</h2>'+offers.map(o=>
+   '<div class="row'+(o.price===min?' best':'')+'"><div class="shop">'+o.shop+'</div><div class="mid">'+o.ram+' RAM · '+o.rom+' <span class="tag '+o.variant+'">'+o.variant.toUpperCase()+'</span></div><div class="price">'+fmt(o.price)+'</div></div>'
+  ).join('');
+  out.appendChild(card);shown++;
+ });
+ if(!shown)out.innerHTML='<div class="empty">No phones found. Try another name.</div>';
+}
+$('#q').addEventListener('input',render);
+$('#filters').addEventListener('click',e=>{
+ const b=e.target.closest('.chip');if(!b)return;
+ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+ b.classList.add('on');variant=b.dataset.v;render();
+});
+load();
+setInterval(load,4*60*60*1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
