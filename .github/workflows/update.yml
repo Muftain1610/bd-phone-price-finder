@@ -1,7 +1,6 @@
 name: Update prices
 on:
-  schedule:
-    - cron: "0 */4 * * *"
+  # Scheduled runs are paused until the scraper is tested; run it by hand from the Actions tab.
   workflow_dispatch:
 jobs:
   update:
