@@ -119,7 +119,7 @@ function finderCard(q){
   return '<div class="row"><div class="shop">'+esc(name)+'</div><div class="mid">Find '+esc(q)+' on this shop</div><a class="visit alt" href="'+url+'" target="_blank" rel="noopener noreferrer">Search shop ↗</a></div>';
  }).join('');
  const all='https://www.google.com/search?q='+encodeURIComponent(q+' price in Bangladesh');
- return '<div class="glass phone finder"><h2>Search “'+esc(q)+'” on the shops</h2><p>Live prices are tracked for the phones below. For any other phone, open the shop’s own results.</p>'+rows+
+ return '<div class="glass phone finder"><h2>Search “'+esc(q)+'” on the shops</h2><p>Exact prices are tracked for the Vivo X300 so far. For other phones, these links open each shop’s own results.</p>'+rows+
   '<div class="row"><div class="shop">All of Bangladesh</div><div class="mid">Compare across every seller</div><a class="visit" href="'+all+'" target="_blank" rel="noopener noreferrer">Search the web ↗</a></div></div>';
 }
 function render(){
