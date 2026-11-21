@@ -31,6 +31,10 @@ h1{font-size:clamp(1.7rem,6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line
 .search svg{flex:none;opacity:.7}
 .search input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font-size:1.05rem;padding:12px 4px}
 .search input::placeholder{color:var(--muted)}
+.search #clr{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:var(--text);font-size:.8rem;cursor:pointer}
+.search #clr:hover{background:rgba(255,255,255,.22)}
+.search input::-webkit-search-cancel-button{display:none}
+footer{max-width:760px;margin:6px auto 0;text-align:center;color:var(--muted);font-size:.75rem;line-height:1.5;opacity:.8}
 .search:focus-within{border-color:var(--a2);box-shadow:0 0 0 3px rgba(34,211,238,.18),0 8px 32px rgba(0,0,0,.35)}
 
 /* status chips */
@@ -45,7 +49,11 @@ h1{font-size:clamp(1.7rem,6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line
 .phone{padding:18px 22px;margin-bottom:16px}
 .phone h2{font-size:1.2rem;margin-bottom:12px}
 /* every row shares the same columns: shop | RAM·storage | variant | price | button */
-.row{display:grid;grid-template-columns:minmax(120px,1.4fr) 128px 78px 96px 150px;align-items:center;gap:10px;padding:12px;margin:0 -12px;border-top:1px solid var(--border);border-radius:14px;transition:background .15s}
+.row{display:grid;grid-template-columns:minmax(120px,1.4fr) 128px 78px 96px 150px;align-items:center;gap:10px;padding:12px;margin:0 -12px;border-radius:14px;transition:background .15s}
+.phone:not(.finder) .row{position:relative}
+/* straight divider above every row except the first and the highlighted ones */
+.phone:not(.finder) .row::before{content:"";position:absolute;top:0;left:12px;right:12px;height:1px;background:var(--border)}
+.phone:not(.finder) .phead + .row::before,.phone:not(.finder) .best::before{display:none}
 .phone:not(.finder) .row:hover{background:rgba(255,255,255,.05)}
 .shop{font-weight:700;min-width:0;display:flex;align-items:center;gap:10px}
 .shop .nm{min-width:0;overflow-wrap:anywhere;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
@@ -55,10 +63,10 @@ h1{font-size:clamp(1.7rem,6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line
 .spec{font-size:.85rem;color:var(--muted);white-space:nowrap}
 .tag{display:inline-block;justify-self:start;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700}
 .tag.china{background:#fb923c;color:#2b1200}
-.price{font-weight:800;font-size:1.05rem;color:var(--accent);white-space:nowrap;text-align:right}
-.best{margin-top:6px;margin-bottom:6px;border-top-color:transparent;background:rgba(34,211,238,.09);box-shadow:inset 0 0 0 1.5px rgba(124,240,255,.85),0 0 22px rgba(34,211,238,.12)}
-.best + .row{border-top-color:transparent}
-.phead + .row{border-top-color:transparent}
+.price{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;font-weight:800;font-size:1.05rem;color:var(--accent);white-space:nowrap}
+.diff{font-size:.68rem;font-weight:600;color:var(--muted)}
+.diff.low{color:#86efac}
+.best{margin-top:6px;margin-bottom:6px;background:rgba(34,211,238,.09);box-shadow:inset 0 0 0 1.5px rgba(124,240,255,.85),0 0 22px rgba(34,211,238,.12)}
 .bp{flex:none;padding:2px 7px;border-radius:999px;background:var(--accent);color:#06222a;font-size:.62rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 .phead{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;margin-bottom:10px}
 .phead h2{margin:0}
@@ -73,7 +81,7 @@ a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offs
 /* any-phone search card */
 .finder h2{margin-bottom:4px}
 .finder p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
-.finder .row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 0;margin:0}
+.finder .row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 0;margin:0;border-top:1px solid var(--border);border-radius:0}
 .finder .row .shop{min-width:150px}
 .finder .row .mid{display:block;flex:1;font-size:.8rem}
 .finder .row .visit{display:inline-block}
@@ -94,6 +102,7 @@ a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offs
  .phone h2{font-size:1.05rem}
  .phead{margin-bottom:6px}
  .row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 10px;padding:12px 10px;margin:0 -10px}
+ .phone:not(.finder) .row::before{left:10px;right:10px}
  .shop{min-width:0;grid-column:1;grid-row:1;font-size:.95rem}
  .price{grid-column:2;grid-row:1;text-align:right;font-size:1.1rem}
  .mid{display:flex;align-items:center;gap:8px;grid-column:1 / -1;grid-row:2;font-size:.8rem}
@@ -120,10 +129,12 @@ a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offs
 </header>
 <div class="glass search">
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
- <input id="q" type="search" placeholder="Search any phone…" autocomplete="off">
+ <input id="q" type="search" placeholder="Search any phone…" autocomplete="off" aria-label="Search any phone">
+ <button id="clr" type="button" aria-label="Clear search" hidden>✕</button>
 </div>
 <div class="chips" id="status"></div>
 <div id="results"></div>
+<footer>Prices are taken from each shop’s website and can change at any time. Always confirm the final price on the shop’s page before you buy.</footer>
 </div>
 <script>
 let DATA={phones:[],updated:null};
@@ -186,6 +197,10 @@ function render(){
  const terms=q.split(' ').filter(Boolean);
  const out=$('#results');out.innerHTML='';
  let shown=0;
+ if(!DATA.phones.length){
+  out.innerHTML='<div class="empty">Couldn’t load prices. Check your connection and reload the page.</div>';
+  return;
+ }
  DATA.phones.forEach(p=>{
   const name=p.name.toLowerCase();
   if(terms.length&&!terms.every(t=>name.includes(t)))return;
@@ -199,7 +214,8 @@ function render(){
   card.innerHTML='<div class="phead"><h2>'+esc(p.name)+'</h2>'+sum+'</div>'+offers.map(o=>{
    const spec=(o.ram&&o.rom&&o.ram!=='-')?esc(o.ram)+' RAM · '+esc(o.rom):'';
    const tag=o.variant?'<span class="tag '+esc(o.variant)+'">'+esc(o.variant.toUpperCase())+'</span>':'<span class="tag"></span>';
-   const price=o.price!=null?fmt(o.price):'—';
+   const diff=(o.price!=null&&min!==null&&prices.length>1)?(o.price===min?'<small class="diff low">lowest</small>':'<small class="diff">+'+fmt(o.price-min)+'</small>'):'';
+   const price='<span>'+(o.price!=null?fmt(o.price):'—')+'</span>'+diff;
    const btn=o.url?'<a class="visit" href="'+esc(o.url)+'" target="_blank" rel="noopener noreferrer">Visit the shop ↗</a>':'<span></span>';
    const isBest=min!==null&&o.price===min&&prices.length>1;
    const cls='row'+(isBest?' best':'');
@@ -216,7 +232,9 @@ function render(){
   out.insertAdjacentHTML('beforeend',finderCard(raw));
  }
 }
-$('#q').addEventListener('input',render);
+function syncClear(){$('#clr').hidden=!$('#q').value;}
+$('#q').addEventListener('input',()=>{syncClear();render();});
+$('#clr').addEventListener('click',()=>{$('#q').value='';syncClear();render();$('#q').focus();});
 load();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
