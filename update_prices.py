@@ -144,9 +144,17 @@ async def click_if_present(page, label, role=None):
         pass
 
 
+DEBUG = {}
+
+
 async def read_shop(ctx, name, url):
     page = await open_page(ctx, url)
     try:
+        try:
+            body = await page.inner_text("body")
+            DEBUG[name] = f"title={(await page.title())[:50]!r} chars={len(body)} start={body[:60]!r}"
+        except Exception:
+            pass
         if name == "KRY International":
             return parse_kry(await page.content())
         if name == "Like Telecom":
@@ -228,7 +236,7 @@ async def main():
                 print("ok   ", name, price)
             else:
                 offer["stale"] = True
-                offer["why"] = why[:120]   # reason, so a failing shop can be diagnosed from prices.json
+                offer["why"] = (why + " | " + DEBUG.get(name, ""))[:300]   # reason, so a failing shop can be diagnosed from prices.json
                 print("STALE", name, "-", why, "(kept", offer.get("price"), ")")
             await asyncio.sleep(DELAY)
         await browser.close()
