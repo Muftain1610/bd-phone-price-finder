@@ -72,8 +72,13 @@ def parse_like(html):
 
 def parse_sumash(html):
     t = visible_text(html)
-    if re.search(r"China\s*\|\s*12/256GB", t):
-        return ld_price(html)
+    # the product line reads "China | 12/256GB | <colour>"; tolerate extra spacing or reordering
+    if re.search(r"China", t) and re.search(r"12\s*/\s*256\s*GB", t):
+        price = ld_price(html)
+        if price is None:
+            m = re.search(r"৳\s?([\d,]+)\s*\(Cash Price\)", t)
+            price = to_int(m.group(1)) if m else None
+        return price
     return None
 
 
@@ -218,10 +223,12 @@ async def main():
                 offer["price"] = price
                 offer["checked"] = now
                 offer.pop("stale", None)
+                offer.pop("why", None)
                 ok_count += 1
                 print("ok   ", name, price)
             else:
                 offer["stale"] = True
+                offer["why"] = why[:120]   # reason, so a failing shop can be diagnosed from prices.json
                 print("STALE", name, "-", why, "(kept", offer.get("price"), ")")
             await asyncio.sleep(DELAY)
         await browser.close()
