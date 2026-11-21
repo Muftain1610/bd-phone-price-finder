@@ -13,6 +13,7 @@ PHONE = "Vivo X300 5G"
 MIN_PRICE, MAX_PRICE = 40000, 200000
 MAX_JUMP = 0.12          # reject a new price that differs by more than 12% from the last one
 DELAY = 2                # seconds between shops, be polite
+FIXED = {"Sumash Tech"}  # blocks automated visitors: its price is set by hand and never changed here
 TZ = datetime.timezone(datetime.timedelta(hours=6))
 
 SHOPS = {
@@ -218,6 +219,12 @@ async def main():
             offer = by_shop.setdefault(name, {"shop": name, "url": url, "ram": "12GB", "rom": "256GB",
                                               "variant": "china", "price": None})
             offer["url"] = url
+            if name in FIXED:
+                offer["fixed"] = True
+                offer.pop("stale", None)
+                offer.pop("why", None)
+                print("fixed", name, offer.get("price"))
+                continue
             price, why = None, "no attempt"
             for attempt in (1, 2):
                 try:
