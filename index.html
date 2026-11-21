@@ -29,8 +29,10 @@ header p{color:var(--muted);margin-top:6px;font-size:.9rem}
 .phone{padding:18px;margin-bottom:16px}
 .phone h2{font-size:1.2rem;margin-bottom:12px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--border)}
-a.row{color:inherit;text-decoration:none}
-a.row:hover{background:rgba(255,255,255,.08)}
+.row{flex-wrap:wrap}
+.visit{padding:8px 14px;border-radius:999px;background:var(--accent);color:#06222a;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.visit:hover{filter:brightness(1.1)}
+.tag.china{background:#fb923c;color:#2b1200}
 .shop{font-weight:700;min-width:120px}
 .mid{flex:1;font-size:.85rem;color:var(--muted)}
 .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700;margin-left:6px}
@@ -46,12 +48,7 @@ a.row:hover{background:rgba(255,255,255,.08)}
 <div class="wrap">
 <header><h1>📱 BD Phone Price Finder</h1><p>Compare prices from shops across Bangladesh</p></header>
 <div class="glass search"><input id="q" type="search" placeholder="Search a phone, e.g. Vivo X300" autocomplete="off"></div>
-<div class="filters" id="filters">
-<button class="chip on" data-v="all">All</button>
-<button class="chip" data-v="global">Global</button>
-<button class="chip" data-v="china">China</button>
-<button class="chip" data-v="official">Official</button>
-</div>
+<div class="filters" id="filters" hidden></div>
 <div class="status" id="status">Loading prices...</div>
 <div id="results"></div>
 </div>
@@ -69,7 +66,7 @@ async function load(){
   if(c)DATA=JSON.parse(c);
  }
  const d=DATA.updated?new Date(DATA.updated).toLocaleString():'unknown';
- $('#status').textContent='Last updated: '+d+' · auto-refreshes every 4 hours';
+ $('#status').textContent='Prices checked: '+d+' · base 12GB/256GB China variant, lowest first';
  render();
 }
 function render(){
@@ -87,10 +84,10 @@ function render(){
   card.innerHTML='<h2>'+p.name+'</h2>'+offers.map(o=>{
    const spec=(o.ram&&o.rom&&o.ram!=='-')?o.ram+' RAM · '+o.rom+' ':'';
    const tag=o.variant?'<span class="tag '+o.variant+'">'+o.variant.toUpperCase()+'</span>':'';
-   const price=o.price!=null?fmt(o.price):'View price ↗';
-   const inner='<div class="shop">'+o.shop+'</div><div class="mid">'+spec+tag+'</div><div class="price">'+price+'</div>';
+   const price=o.price!=null?fmt(o.price):'—';
+   const btn=o.url?'<a class="visit" href="'+o.url+'" target="_blank" rel="noopener noreferrer">Visit the shop ↗</a>':'';
    const cls='row'+(min!==null&&o.price===min?' best':'');
-   return o.url?'<a class="'+cls+'" href="'+o.url+'" target="_blank" rel="noopener noreferrer">'+inner+'</a>':'<div class="'+cls+'">'+inner+'</div>';
+   return '<div class="'+cls+'"><div class="shop">'+o.shop+'</div><div class="mid">'+spec+tag+'</div><div class="price">'+price+'</div>'+btn+'</div>';
   }).join('');
   out.appendChild(card);shown++;
  });

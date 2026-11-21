@@ -1,19 +1,17 @@
 {
-  "updated": "2026-11-21T10:00:00+06:00",
+  "updated": "2026-11-21T18:00:00+06:00",
   "phones": [
     {
-      "name": "Vivo X300",
+      "name": "Vivo X300 5G",
       "offers": [
-        { "shop": "KRY International", "url": "https://kryinternational.com/products/vivo-x300", "price": null },
-        { "shop": "Taham Tech", "url": "https://tahamtech.com.bd/product/vivo-x300-ultra/", "price": null },
-        { "shop": "Cell Tech BD", "url": "https://www.celltechbd.com.bd/product/vivo-x300", "price": null },
-        { "shop": "SMS Gadget", "url": "https://smsgadget.com/product/vivo-x300", "price": null },
-        { "shop": "Rio International", "url": "https://riointernational.com.bd/product/vivo-x300-5g", "ram": "12GB", "rom": "256GB", "variant": "global", "price": 78999 },
-        { "shop": "Apple Gadgets BD", "url": "https://www.applegadgetsbd.com/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "official", "price": 83499 },
-        { "shop": "Sumash Tech", "url": "https://www.sumashtech.com/product/vivo-x300", "price": null },
-        { "shop": "Dazzle", "url": "https://dazzle.com.bd/product/vivo-x300-price-in-bangladesh", "price": null },
-        { "shop": "Like Telecom", "url": "https://liketelecom.com.bd/vivo-x300-ultra", "price": null },
-        { "shop": "Gadget & Gear", "url": "https://gadgetandgear.com/product/vivo-x300-pro", "price": null }
+        { "shop": "Cell Tech BD", "url": "https://www.celltechbd.com.bd/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 72500 },
+        { "shop": "Taham Tech", "url": "https://tahamtech.com.bd/product/vivo-x300/", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 77490 },
+        { "shop": "SMS Gadget", "url": "https://smsgadget.com/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 80999 },
+        { "shop": "KRY International", "url": "https://kryinternational.com/products/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 80999 },
+        { "shop": "Rio International", "url": "https://riointernational.com.bd/product/vivo-x300-5g", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 81999 },
+        { "shop": "Apple Gadgets BD", "url": "https://www.applegadgetsbd.com/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 83499 },
+        { "shop": "Sumash Tech", "url": "https://www.sumashtech.com/product/vivo-x300", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 83999 },
+        { "shop": "Dazzle", "url": "https://dazzle.com.bd/product/vivo-x300-price-in-bangladesh", "ram": "12GB", "rom": "256GB", "variant": "china", "price": 85090 }
       ]
     }
   ]
